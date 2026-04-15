@@ -75,19 +75,43 @@ Claude に「diagram.md に Mermaid で書き出して」と指示する。人�
 
 ### ステップ4: draw.io XML 生成
 
-Claude に「diagram.drawio に draw.io 形式で書き出して」と指示する。
+Claude に「diagram.drawio に draw.io 形式で書き出して」と指示する。Claude はこのステップで [`styles/layout.md`](styles/layout.md) と [`styles/elements.md`](styles/elements.md) を読んで XML を組み立てる。スタイル定義は人間が直接触る必要はなく、スタイル変更が必要なら「`styles/` のルールに従って」と言うだけで良い。
 
-#### スタイルの決定
+#### スタイルの source of truth
 
-`docs/STYLES.md` が**プロジェクトのスタイル源泉**。Claude はこれを参照して XML を作る。
-公式の SAP ガイドライン（`docs/GUIDELINES.md` 経由）は補助資料であり、STYLES.md と食い違った場合は **STYLES.md が優先**。
+- **[`GUIDELINES.md`](GUIDELINES.md) = SAP 公式ガイドラインの日本語要約 = source of truth**
+- **[`styles/`](styles/) = GUIDELINES を draw.io XML として具体化した実装層**
+- `styles/` と公式が食い違う場合は、原則として `styles/` を公式に合わせて修正する。Claude は食い違いを見つけても勝手に直さず、**ユーザーに報告してから対応**する（過去の iteration で意図的にずらしている可能性があるため）。
 
-#### 修正指示の Tips
+#### 不明なスタイル・アイコンに遭遇したとき（重要）
+
+`styles/` と `GUIDELINES.md` のどちらにも定義されていない要素（未登録のサービスアイコン `SAPIcon` 名、新種の矩形、初めて使う色 / 線種 など）に遭遇したら、**推測で描かずユーザーに確認する**。確認の粒度：
+
+- **SAP サービスアイコン**: `SAPIcon=...` の正式名が不明なときは、シェイプ名を推測せずユーザーに聞く（誤った名前だと draw.io 側で空表示になる）
+- **スタイル仕様**: 色・角丸・線種・フォント等で `styles/` に定義がない要素は、公式 GUIDELINES に該当セクションがあればそれを引用し、無ければユーザーに確認する
+- **レイアウト判断**: 新しい配置パターン（スタックコンテナ、interface 記号など）は勝手に採用しない
+
+確認の結果、**再利用可能なルールだと判断したら [`styles/layout.md`](styles/layout.md) または [`styles/elements.md`](styles/elements.md) に追記**する。公式由来のルールなら [`GUIDELINES.md`](GUIDELINES.md) の該当セクションへの相互リンクも一緒に足す。これにより `styles/` が使用と共に育っていき、次回以降は再質問が不要になる。
+
+> Claude への指示例: 「この図で SAP Integration Suite のアイコンが要るけど `styles/elements.md` に `SAPIcon` 名の記載が無い。正しい名前を教えてもらえたら、そのまま `styles/elements.md` の SAPIcon 表に追記してください」
+
+#### Claude / 人間の分担
+
+| 内容 | 担当 |
+|---|---|
+| SAP サービスアイコン（`mxgraph.sap.icon`）の配置 | **Claude** |
+| Generic Icon（`shape=image` + base64 SVG）の配置 | **人間**（Claude は空プレースホルダを置くだけ。サイズは `styles/layout.md` 参照） |
+| コンテナ・線・テキスト・スタイル全般 | **Claude** |
+
+**なぜ Generic Icon のみ人間担当か**: base64 エンコードされた SVG を 1 アイコンあたり数 KB、style 属性に埋め込む必要があり、Claude が XML 内で扱うとトークン消費・応答時間が膨れ上がる。SAP サービスアイコンは `SAPIcon=<名前>` の短い識別子で済むため問題ない。
+
+会話の冒頭で「Generic Icon は人間が後から配置するので、SAP サービスアイコンのみ XML に記述してください」と伝えておくと誤解がない。
+
+#### 指示の Tips
 
 - **アイコンを触らないでほしい時**: 「アイコンの差し替えはこちらで行うので、それ以外の修正のみ適用してください」
 - **埋め込みラベルのスタイルだけ変えたい時**: 「コンテナ埋め込みの状態で、文字のスタイルのみ変更することはできませんか？」（別セル化を防ぐ）
-- **線の種類を一括指定**: 「線は横並びになるコンポーネント以外は折れ曲がった直線 (orthogonalEdgeStyle) を使用してください」
-- **ルールを STYLES.md に永続化**: 新しく決めたルールは「STYLES.md に追加してください」と明示的に指示すると、次回以降の会話でも反映される
+- **新しいルールを永続化したい時**: 「`docs/styles/layout.md`（または `elements.md`）に追加してください」と明示的に指示する
 
 ---
 
@@ -109,42 +133,32 @@ Claude がスクリーンショットを Read で読み込んでビジョンで�
 
 ---
 
-## 今日確立したルール（プロジェクト固有）
-
-これらは `docs/STYLES.md` に記載済み：
-
-- **SAP ロゴ必須**: BTP コンテナには必ず SAP ロゴを配置する
-- **Subaccount 内の単体サービスは矩形で囲まない**: アイコン + ラベルだけで配置。複数サービスを1つのソリューションとしてグルーピングする場合のみ矩形で囲み、その判断は設計段階で人間が明示する
-- **テキストスタイル**: サービス名・コンテナ名は Medium Title (fontSize=12, fontFamily=Helvetica, fontColor=default)
-- **線のルール**: 横並び以外は orthogonal（折れ曲がった直線）
-- **色のルール**: SAP は #0070F2 ボーダー + #EBF8FF 塗り、非SAP は #475E75 ボーダー + #F5F6F7 塗り
-- **trust 線**: #CC00DC (ピンク) 双方向
-- **認証委譲線**: #188918 (グリーン) 双方向
-
----
-
 ## ファイル構成
 
 | ファイル | 役割 |
 |---|---|
 | `diagram.md` | Mermaid 論理構造（ステップ2-3 の成果物） |
 | `diagram.drawio` | draw.io XML（ステップ4 の成果物、手貼り用） |
-| `docs/STYLES.md` | プロジェクトのスタイル源泉（最優先） |
-| `docs/GUIDELINES.md` | SAP 公式ガイドラインへのリンク集 |
+| `docs/README.md` | docs/ 配下の索引 |
+| `docs/WORKFLOW.md` | このファイル（フロー全体） |
+| `docs/GUIDELINES.md` | SAP 公式ガイドラインの日本語要約（source of truth） |
+| `docs/styles/layout.md` | レイアウト原則・標準サイズ・軸揃え・エッジ規則（GUIDELINES の実装層） |
+| `docs/styles/elements.md` | 個別要素のスタイル定義（GUIDELINES の実装層） |
 | `.claude/CLAUDE.md` | draw.io MCP の使い方・Tips |
-| `docs/WORKFLOW.md` | このファイル |
 
 ---
 
-## よくある失敗と対策
+## よくある作業上の失敗と対策
+
+個別のスタイル誤りは `docs/styles/` 側で管理する。ここにはワークフロー運用で起こる失敗だけを載せる。
 
 | 失敗 | 原因 | 対策 |
 |---|---|---|
-| Subaccount 名が太字で大きい | Claude が独自判断で強調した | Medium Title 指定（fontSize=12, non-bold） |
-| ラベルが別セルで作られる | Claude が「スタイル変更 = 新規セル作成」と解釈 | 「コンテナ埋め込みのまま文字スタイルだけ変えて」と指示 |
-| trust 線が青い点線 | SAP 公式と STYLES.md を取り違え | STYLES.md が優先と明示 |
-| Mermaid から draw.io 変換でスタイルが崩れる | ステップ2で先にスタイルを決めてしまった | Mermaid は論理構造のみ、スタイルはステップ4で |
-| サービスが不要な矩形で囲われる | デフォルトで囲う癖 | STYLES.md の「Subaccount 内は囲まない」ルールで防止 |
+| ステップ2で Mermaid にスタイル情報を入れてしまう | 論理構造と見た目を同時に決めようとした | Mermaid は論理構造のみ、スタイルはステップ4で |
+| Claude が独自判断でスタイルを変えてしまう | `styles/` 参照を明示しなかった | ステップ4の冒頭で「`docs/styles/` のルールに従って」と明示する |
+| ラベルが別セルで作られてしまう | Claude が「スタイル変更 = 新規セル作成」と解釈 | 「コンテナ埋め込みのまま文字スタイルだけ変えて」と指示 |
+| Claude が Generic Icon の base64 を触ってしまう | 役割分担を伝えていない | ステップ4の冒頭で「Generic Icon は人間が配置する」と明示 |
+| Claude が新しく決めたルールを忘れる | 会話内だけで合意して永続化しなかった | 「`docs/styles/layout.md`（または `elements.md`）に追加してください」と指示する |
 
 ---
 
