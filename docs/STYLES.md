@@ -19,6 +19,8 @@ text: （空）
 
 ## SAP ロゴ
 
+**⚠️ 必須**: SAP BTP エリア（BTPコンテナ）には必ずSAPロゴを追加すること。ロゴセルは「BTP」というタイトル文字も兼ねる。
+
 ```
 style: image;image=img/lib/sap/SAP_Logo.svg;editableCssRules=.*;
        verticalLabelPosition=middle;labelBackgroundColor=none;verticalAlign=middle;
@@ -32,6 +34,7 @@ text: SAP BTP  ← タイトル文字を兼ねる（ロゴ右側に表示され�
 - `labelPosition=right` によりテキストがロゴ右隣に表示される
 - サイズは **37×19** が正しい縦横比（これより大きくすると横伸びする）
 - コンテナ内の左上に配置（コンテナ x+15, コンテナ y+11 が目安）
+- BTP コンテナ矩形自体の `value` は空にし、ロゴセルで重ねて表示する
 - タイトル文字のスタイルはロゴセルに内包されており、単独のスタイル定義は未確立
 
 ### タイトル文字のスタイル（ロゴセル内）
@@ -47,7 +50,7 @@ text: SAP BTP  ← タイトル文字を兼ねる（ロゴ右側に表示され�
 
 ## サービスボックス（白い矩形）
 
-サブアカウント内のサービス（SAP Build Work Zone、SAP Task Center 等）に使用。
+**⚠️ 使用ルール**: Subaccount 内のサービスは基本的に矩形で囲む必要はない（アイコン + ラベルのみで配置する）。**複数のサービスで構成されるソリューションをグルーピングする場合のみ** 矩形で囲む。ソリューション単位のグルーピングが必要かどうかは設計段階で明示的に指示する。
 
 ```
 style: rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#ffffff;

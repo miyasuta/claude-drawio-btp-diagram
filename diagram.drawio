@@ -6,8 +6,12 @@
         <mxCell id="1" parent="0" />
 
         <!-- BTP outer container (filled) -->
-        <mxCell id="btp" value="SAP BTP" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#EBF8FF;arcSize=32;absoluteArcSize=1;strokeWidth=1.5;verticalAlign=top;fontSize=14;fontStyle=1;fontColor=#002A86;fontFamily=Helvetica;" vertex="1" parent="1">
+        <mxCell id="btp" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#EBF8FF;arcSize=32;absoluteArcSize=1;strokeWidth=1.5;" vertex="1" parent="1">
           <mxGeometry x="160" y="40" width="640" height="620" as="geometry" />
+        </mxCell>
+        <!-- SAP logo + BTP title (mandatory for BTP area) -->
+        <mxCell id="btpLogo" value="SAP BTP" style="image;image=img/lib/sap/SAP_Logo.svg;editableCssRules=.*;verticalLabelPosition=middle;labelBackgroundColor=none;verticalAlign=middle;imageAspect=0;labelPosition=right;align=left;fontSize=16;fontStyle=1;spacingLeft=0;fontColor=#002A86;spacing=0;" vertex="1" parent="1">
+          <mxGeometry x="175" y="51" width="37" height="19" as="geometry" />
         </mxCell>
 
         <!-- Subaccount container (unfilled, alternating) -->
@@ -15,18 +19,12 @@
           <mxGeometry x="190" y="80" width="580" height="340" as="geometry" />
         </mxCell>
 
-        <!-- BWZ service box -->
-        <mxCell id="bwzBox" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#ffffff;arcSize=24;absoluteArcSize=1;strokeWidth=1.5;" vertex="1" parent="1">
-          <mxGeometry x="220" y="130" width="200" height="250" as="geometry" />
-        </mxCell>
+        <!-- BWZ service (icon only, no wrapping box per STYLES.md rule) -->
         <mxCell id="bwz" value="SAP Build Work Zone" style="shape=mxgraph.sap.icon;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;strokeWidth=1;strokeColor=#D5DADD;fillColor=#EDEFF0;gradientColor=#FCFCFC;gradientDirection=west;aspect=fixed;fontSize=12;fontColor=default;fontFamily=Helvetica;SAPIcon=SAP_Build_Work_Zone_-_Standard_Edition;" vertex="1" parent="1">
           <mxGeometry x="292" y="215" width="56" height="56" as="geometry" />
         </mxCell>
 
-        <!-- Task Center service box -->
-        <mxCell id="tcBox" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#ffffff;arcSize=24;absoluteArcSize=1;strokeWidth=1.5;" vertex="1" parent="1">
-          <mxGeometry x="540" y="130" width="200" height="250" as="geometry" />
-        </mxCell>
+        <!-- Task Center service (icon only, no wrapping box per STYLES.md rule) -->
         <mxCell id="tc" value="SAP Task Center" style="shape=mxgraph.sap.icon;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;strokeWidth=1;strokeColor=#D5DADD;fillColor=#EDEFF0;gradientColor=#FCFCFC;gradientDirection=west;aspect=fixed;fontSize=12;fontColor=default;fontFamily=Helvetica;SAPIcon=SAP_Task_Center;" vertex="1" parent="1">
           <mxGeometry x="612" y="215" width="56" height="56" as="geometry" />
         </mxCell>
