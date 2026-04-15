@@ -49,14 +49,17 @@ Subaccount や BTP コンテナのサイズは、内部要素を配置したう�
 
 | 要素 | 標準サイズ | 備考 |
 |---|---|---|
-| SAP サービスアイコン（`mxgraph.sap.icon`） | **56×56** | 変更しない |
+| SAP サービスアイコン（`mxgraph.sap.icon`、単独配置） | **50×50** | Subaccount 直下などで単独配置する場合 |
+| SAP サービスアイコン（ボックス内左上の識別用） | **32×32** | サービスボックス（BWZ・CF 等）の左上にアイコン+タイトルとして置く場合。詳細は [`elements.md` の「サービスアイコン付きサービスボックス」](elements.md#サービスアイコン付きサービスボックス) |
 | Generic Icon（`shape=image` + base64 SVG） | **40×40（正方形）** | Claude はこのサイズで仮配置する。正方形で収まらないアイコンは**人間が後で調整**する |
 | SAP On-Premise / Cloud Solutions 矩形 | 120×60 | |
 | 3rd-party Identity Provider 矩形 | 120×60 | |
 
 **Generic Icon のプレースホルダ配置**:
 - Claude は Generic Icon の base64 データを扱わない（WORKFLOW.md 参照）
-- Claude は **40×40 の正方形の空矩形** を placeholder として仮配置するだけで良い
+- Claude は **40×40 の正方形の空矩形**（`value=""`、`dashed=1` の破線枠）を placeholder として仮配置する
+- **ラベルはプレースホルダの中に書かず、下に別の text セルとして置く**（理由: 人間がプレースホルダを SVG 画像に差し替えるだけでレイアウトが完成するため。ラベルが矩形の内側にあると差し替え時にラベルまで消えてしまう）
+- ラベル text セルの例: `text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=0;strokeColor=none;fillColor=none;fontSize=11;fontColor=default;fontFamily=Helvetica;` をプレースホルダ直下（プレースホルダ底辺から 4〜6 px 下）に配置
 - アスペクト比が正方形でないアイコン（例: Application Clients は横長の SVG）は、人間が draw.io 上で差し替え時にサイズ調整する
 - 重要なのは**位置を先に確定させる**こと。アイコン差し替え後に人間が大きさを微調整しても、中心座標さえ合っていればレイアウトは崩れない
 
@@ -77,7 +80,18 @@ Subaccount や BTP コンテナのサイズは、内部要素を配置したう�
 
 > 関連: 公式 Lines / Connectors の方向とセマンティック色のルール → [`../GUIDELINES.md` の Lines / Connectors セクション](../GUIDELINES.md#lines--connectors線コネクタ)
 
-### 5. エッジの接続点を明示的に指定する
+### 5. SAP Cloud Identity Services は Subaccount の下に配置する
+
+SAP Cloud Identity Services (IAS) は BTP コンテナ内・Subaccount 外の要素。配置は **Subaccount の直下（垂直下方）** に固定する。
+
+**ルール**:
+- IAS アイコン（56×56）を Subaccount の下辺中央付近、BTP コンテナ内の下段に置く
+- Subaccount ↔ IAS の trust 線は短い垂直線になる（Subaccount 下辺中央 → IAS 上辺中央、ピンク双方向）
+- BTP コンテナの高さは IAS を含めた下部余白まで確保する（Subaccount 下端 + 30 px ギャップ + IAS 高さ + 30 px ボトム余白）
+
+**なぜ下か**: IAS は認証のバックエンドとして Subaccount を支える関係。視覚的にも「Subaccount が IAS に乗っている」イメージで、trust 線の向きが上下になるよう揃える。左右や上に置くと他の要素と交差しやすく、trust 線の意味が読み取りにくくなる。
+
+### 6. エッジの接続点を明示的に指定する
 
 矢印の source / target だけを指定すると、draw.io が自動でルーティングを決めるため、コンテナの位置調整で経路が崩れることがある。重要な矢印には **`entryX` / `entryY`** を明示的に指定する。
 

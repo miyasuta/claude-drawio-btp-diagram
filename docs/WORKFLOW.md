@@ -37,25 +37,29 @@ Claude には以下を明示的に伝える：
 
 #### サンプル指示文
 
-> 以下のランドスケープをダイアグラム化してください。
->
-> **BTP 内**:
-> - Subaccount (BTP 内)
->   - SAP Build Work Zone
->   - SAP Task Center
-> - SAP Cloud Identity Services (BTP 内、Subaccount 外)
->
-> **BTP 外**:
-> - End User (非SAP)
-> - Application Clients: Mobile or Desktop (非SAP)
-> - 3rd-party Identity Provider (非SAP)
-> - SAP On-Premise Solutions (SAP)
-> - SAP Cloud Solutions (SAP)
->
-> **関係**:
-> - End User → Application Clients → Build Work Zone → Task Center → On-Prem / Cloud Solutions
-> - Subaccount ↔ Cloud Identity Services (trust)
-> - Cloud Identity Services ↔ 3rd-party IdP (delegates auth)
+そのままプロンプトに貼れる形式：
+
+```text
+以下のランドスケープをダイアグラム化してください。
+
+**BTP 内**:
+- Subaccount (BTP 内)
+  - SAP Build Work Zone
+  - SAP Task Center
+- SAP Cloud Identity Services (BTP 内、Subaccount 外)
+
+**BTP 外**:
+- End User (非SAP)
+- Application Clients: Mobile or Desktop (非SAP)
+- 3rd-party Identity Provider (非SAP)
+- SAP On-Premise Solutions (SAP)
+- SAP Cloud Solutions (SAP)
+
+**関係**:
+- End User → Application Clients → Build Work Zone → Task Center → On-Prem / Cloud Solutions
+- Subaccount ↔ Cloud Identity Services (trust)
+- Cloud Identity Services ↔ 3rd-party IdP (delegates auth)
+```
 
 曖昧な部分は Claude が聞き返すので、番号付きで回答する：
 
@@ -76,6 +80,23 @@ Claude に「diagram.md に Mermaid で書き出して」と指示する。人�
 ### ステップ4: draw.io XML 生成
 
 Claude に「diagram.drawio に draw.io 形式で書き出して」と指示する。Claude はこのステップで [`styles/layout.md`](styles/layout.md) と [`styles/elements.md`](styles/elements.md) を読んで XML を組み立てる。スタイル定義は人間が直接触る必要はなく、スタイル変更が必要なら「`styles/` のルールに従って」と言うだけで良い。
+
+#### XML 生成前の準備（推奨手順）
+
+XML を書き始める前に、以下を済ませておくと往復が減る。
+
+1. **必要要素の棚卸し**: その図で使うサービスアイコン名・ボックス種別・新規のレイアウトパターンを列挙する
+2. **styles / GUIDELINES に存在するか確認**: [`styles/elements.md`](styles/elements.md) の SAPIcon 表、[`styles/layout.md`](styles/layout.md) の標準サイズ表、[`GUIDELINES.md`](GUIDELINES.md) を突き合わせる
+3. **不明点を一括でユーザーに確認**: 不明な SAPIcon 名や未定義パターンを **全部まとめて** 聞く（遭遇するたびに聞くと会話が細切れになる）
+
+#### 座標の粒度
+
+Claude が XML を書く際、座標は粗く決めて良い。**最終的な位置微調整は人間が draw.io 上で行う**。Claude が厳密に合わせるべきなのは以下だけ:
+
+- **直線矢印で結ぶ要素の中心座標**（中心が 1 px でもずれると orthogonal に折れ曲がる、[`styles/layout.md`](styles/layout.md) §4 参照）
+- **コンテナの内外関係**（BTP の中 / Subaccount の中 / ボックスの中、の所属）
+
+それ以外（コンテナの幅・高さ、余白、矢印のベンド点など）はおおよそで良い。ピクセル単位の計算に時間をかけるより、粗い XML を早く出してユーザーのフィードバックを受ける方が速い。
 
 #### スタイルの source of truth
 
@@ -159,6 +180,8 @@ Claude がスクリーンショットを Read で読み込んでビジョンで�
 | ラベルが別セルで作られてしまう | Claude が「スタイル変更 = 新規セル作成」と解釈 | 「コンテナ埋め込みのまま文字スタイルだけ変えて」と指示 |
 | Claude が Generic Icon の base64 を触ってしまう | 役割分担を伝えていない | ステップ4の冒頭で「Generic Icon は人間が配置する」と明示 |
 | Claude が新しく決めたルールを忘れる | 会話内だけで合意して永続化しなかった | 「`docs/styles/layout.md`（または `elements.md`）に追加してください」と指示する |
+| アイコン名の確認で会話が細切れになる | XML 生成中に未登録アイコンに遭遇するたびユーザーに聞いた | ステップ4冒頭で必要アイコンを列挙し、未登録分を **一括で** 確認する（上記「XML 生成前の準備」参照） |
+| Claude が座標計算に時間をかけすぎる | ピクセル単位で完璧に合わせようとした | 最終調整は人間の仕事。Claude は直線矢印の両端と所属関係だけ厳密にし、他は粗で出す |
 
 ---
 

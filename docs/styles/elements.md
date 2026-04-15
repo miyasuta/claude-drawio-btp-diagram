@@ -79,12 +79,36 @@ text: Subaccount
 
 > 関連: 公式 Areas → [`../GUIDELINES.md` の Areas セクション](../GUIDELINES.md#areas矩形エリア)。角丸半径は公式の 16 px に合わせる（`arcSize=32` + `absoluteArcSize=1`）。
 
-**⚠️ 使用ルール**: Subaccount 内のサービスは基本的に矩形で囲む必要はない（アイコン + ラベルのみで配置する）。**複数のサービスで構成されるソリューションをグルーピングする場合のみ** 矩形で囲む。ソリューション単位のグルーピングが必要かどうかは設計段階で明示的に指示する。
+**⚠️ 使用ルール**: Subaccount 内のサービスは基本的に矩形で囲む必要はない（アイコン + ラベルのみで配置する）。**複数のサービスで構成されるソリューションをグルーピングする場合や、そのサービスが他のコンポーネント（別サービス・アプリケーション等）をホストする場合のみ** 矩形で囲む。ソリューション単位のグルーピングが必要かどうかは設計段階で明示的に指示する。
 
 ```
 style: rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#ffffff;
        arcSize=32;absoluteArcSize=1;imageWidth=64;imageHeight=64;strokeWidth=1.5;
 ```
+
+### サービスアイコン付きサービスボックス
+
+サービスが他の要素をホストする形でボックス化した場合、そのサービスの識別性を保つために **ボックス左上にサービスアイコンとタイトル** を配置する。ボックス自体の `value` は空にし、アイコンセル + タイトルテキストセルを別セルとして重ねる。
+
+**構成**:
+
+1. **サービスボックス**（`value=""`、上記のサービスボックススタイル）
+2. **サービスアイコン**（`shape=mxgraph.sap.icon;...;SAPIcon=<名前>`、**32×32**）
+   - ボックス左上から `x+15, y+12` の位置に配置
+   - ラベルは不要なので `value=""`
+3. **タイトルテキスト**（`text;html=1;...;fontSize=12;fontStyle=1;fontColor=#002A86;fontFamily=Helvetica;`）
+   - アイコンの右隣（アイコン x + 40 あたり）に配置
+   - Y 中央をアイコンと揃える（アイコン y と同じ y、高さ 32 の text セル）
+   - SAP BTP タイトル色（`#002A86`）+ 太字
+
+**配置例**（BWZ ボックス `x=240, y=180, w=180, h=140` の場合）:
+
+| セル | x | y | w | h |
+|---|---|---|---|---|
+| アイコン | 255 | 192 | 32 | 32 |
+| タイトル | 295 | 192 | 120 | 32 |
+
+**ボックス内の子要素**（UI5 App プレースホルダ等）はアイコン/タイトルの下に配置する。ボックスの縦方向中心と子要素の中心がずれる分、他のサービスとの横並び直線矢印を維持するには、**子要素側の Y 中心をフロー主軸に合わせ**、ボックス自体はそれを内包する高さを持たせる（アイコン+タイトルの余白を上に確保）。
 
 ---
 
@@ -205,7 +229,10 @@ fillColor=#EDEFF0;gradientColor=#FCFCFC;gradientDirection=west;aspect=fixed;
 SAPIcon=<アイコン名>
 ```
 
-サイズは **56×56** 固定（[`layout.md`](layout.md) の標準サイズ表を参照）。
+サイズは用途に応じて以下を使い分ける（[`layout.md`](layout.md) の標準サイズ表も参照）:
+
+- **単独配置**（Subaccount 直下など）: **50×50**
+- **サービスボックス左上の識別アイコン**: **32×32**（後述の「サービスアイコン付きサービスボックス」参照）
 
 ### 主な SAPIcon 名
 
@@ -214,5 +241,7 @@ SAPIcon=<アイコン名>
 | SAP Build Work Zone - Standard Edition | `SAP_Build_Work_Zone_-_Standard_Edition` |
 | SAP Cloud Identity Services | `SAP_Cloud_Identity_Service` |
 | SAP Task Center | `SAP_Task_Center` |
+| SAP HANA Cloud | `SAP_HANA_Cloud` |
+| SAP BTP, Cloud Foundry runtime | `SAP_BTP,_Cloud_Foundry_runtime` |
 
 他のサービスのアイコン名は draw.io のシェイプライブラリから確認できる。
