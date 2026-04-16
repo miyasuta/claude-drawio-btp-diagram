@@ -75,7 +75,7 @@
 
     <!-- Cloud Connector (inside S/4HANA) -->
     <mxCell id="cc" value="Cloud&#xa;Connector" style="shape=mxgraph.sap.icon;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;strokeWidth=1;strokeColor=#D5DADD;fillColor=#EDEFF0;gradientColor=#FCFCFC;gradientDirection=west;aspect=fixed;fontSize=12;fontColor=default;fontFamily=Helvetica;SAPIcon=Cloud_Connector2" vertex="1" parent="1">
-      <mxGeometry x="920" y="230" width="50" height="50" as="geometry"/>
+      <mxGeometry x="920" y="235" width="50" height="50" as="geometry"/>
     </mxCell>
 
     <!-- ===== End User (Generic Icon placeholder) ===== -->
