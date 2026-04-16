@@ -5,7 +5,7 @@
 
     <!-- ===== BTP Container ===== -->
     <mxCell id="btp" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#EBF8FF;arcSize=32;absoluteArcSize=1;strokeWidth=1.5;verticalAlign=top;fontSize=14;fontStyle=1;fontColor=#002A86;" vertex="1" parent="1">
-      <mxGeometry x="220" y="30" width="600" height="460" as="geometry"/>
+      <mxGeometry x="220" y="30" width="600" height="480" as="geometry"/>
     </mxCell>
     <mxCell id="logo" value="SAP BTP" style="image;image=img/lib/sap/SAP_Logo.svg;editableCssRules=.*;verticalLabelPosition=middle;labelBackgroundColor=none;verticalAlign=middle;imageAspect=0;labelPosition=right;align=left;fontSize=16;fontStyle=1;spacingLeft=0;fontColor=#002A86;spacing=0;" vertex="1" parent="1">
       <mxGeometry x="235" y="41" width="37" height="19" as="geometry"/>

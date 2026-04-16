@@ -86,9 +86,24 @@ Subaccount や BTP コンテナのサイズは、内部要素を配置したう�
 > 論理原則「CIS は Subaccount の下に配置する」→ [`../rules/conventions.md` §5](../rules/conventions.md#5-sap-cloud-identity-services-は-subaccount-の下に配置する)
 
 **実装ルール**:
-- CIS アイコン（56×56）を Subaccount の下辺中央付近、BTP コンテナ内の下段に置く
+- CIS アイコン（50×50）を Subaccount の下辺中央付近、BTP コンテナ内の下段に置く
 - Subaccount ↔ CIS の trust 線は短い垂直線になる（Subaccount 下辺中央 → CIS 上辺中央、ピンク双方向）
-- BTP コンテナの高さは CIS を含めた下部余白まで確保する（Subaccount 下端 + 30 px ギャップ + CIS 高さ + 30 px ボトム余白）
+- BTP コンテナの高さは CIS の**ラベル底辺**まで含めた下部余白で確保する
+
+**BTP コンテナ高さの計算式**:
+
+```
+BTP 高さ = (SA の y + SA の height) − BTP の y   ← SA 下端までの距離
+         + 30                                     ← SA〜CIS 間のギャップ
+         + 50                                     ← CIS アイコン高さ
+         + 30                                     ← ラベル高さ（2行 × fontSize=12 の推定値）
+         + 20                                     ← 下部余白
+```
+
+**実測値の参考**（2026-04-17-01 ダイアグラム）:
+- BTP: y=30, SA: y=80, h=300 → SA 下端=380
+- CIS: y=410（ギャップ 30px）、アイコン底辺=460、ラベル底辺 ≈ 490
+- BTP 高さ = (380−30) + 30 + 50 + 30 + 20 = **480** → BTP 下端=510
 
 ---
 
