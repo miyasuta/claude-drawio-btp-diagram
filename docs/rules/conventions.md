@@ -37,7 +37,7 @@ draw.io の見た目（色・サイズ・座標の px 値）は [`../styles/`](.
 
 ## 4. End User → Application Clients は常にセットで配置する
 
-End User の右隣に **Application Clients**（Generic Icon）を配置し、BTP 内サービスへの入口とする。
+End User と **Application Clients**（Generic Icon）を**縦に並べて**セットで配置し、BTP 内サービスへの入口とする。End User が上、Application Clients が下。
 
 - End User → Application Clients → BTP 内サービス（Build Work Zone 等）
 - **認証線は Application Clients から出す**（End User からではない）
