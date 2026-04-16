@@ -243,5 +243,16 @@ SAPIcon=<アイコン名>
 | SAP Task Center | `SAP_Task_Center` |
 | SAP HANA Cloud | `SAP_HANA_Cloud` |
 | SAP BTP, Cloud Foundry runtime | `SAP_BTP,_Cloud_Foundry_runtime` |
+| SAP Build Process Automation | `SAP_Build_Process_Automation` |
+| SAP AI Core | `SAP_AI_Core` |
+| SAP AI Launchpad | `SAP_AI_Launchpad` |
+| SAP Cloud Logging | `SAP_Cloud_Logging` |
+| SAP Authorization and Trust Management service | `SAP_Authorization_and_Trust_Management_service` |
+| SAP Integration Suite | `SAP_Integration_Suite` |
+| SAP Integration Suite - Cloud Integration | `SAP_Integration_Suite_-_Cloud_Integration` |
+| SAP Integration Suite - API Management | `SAP_Integration_Suite_-_API_Managment` |
+| SAP Destination service | `SAP_Destination_service` |
+| Cloud Connector | `Cloud_Connector2` |
+| SAP Connectivity Service | `SAP_Connectivity_Service` |
 
 他のサービスのアイコン名は draw.io のシェイプライブラリから確認できる。
