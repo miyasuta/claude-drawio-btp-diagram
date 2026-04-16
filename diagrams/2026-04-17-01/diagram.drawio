@@ -100,7 +100,7 @@
     <!-- ===== Edges: Main Flow ===== -->
 
     <!-- End User → Application Clients (straight) -->
-    <mxCell id="e1" style="endArrow=blockThin;html=1;strokeColor=#475e75;rounded=0;endFill=1;endSize=4;strokeWidth=1.5;startSize=4;startArrow=none;startFill=0;" edge="1" source="eu" target="ac" parent="1">
+    <mxCell id="e1" style="endArrow=blockThin;html=1;strokeColor=#475e75;rounded=0;endFill=1;endSize=4;strokeWidth=1.5;startSize=4;startArrow=none;startFill=0;" edge="1" source="eu_label" target="ac" parent="1">
       <mxGeometry relative="1" as="geometry"/>
     </mxCell>
 

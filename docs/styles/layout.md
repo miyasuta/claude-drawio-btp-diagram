@@ -124,6 +124,11 @@ BTP 高さ = (SA の y + SA の height) − BTP の y   ← SA 下端までの�
 - Application Clients → CIS (authenticate): source は AC の**ラベル text セル**（プレースホルダではない）。`exitX=0.5;exitY=1` → `entryX=0;entryY=0.5`（ラベル下辺中央 → CIS 左辺中央、orthogonal）
 - CIS → 3rd-party IdP (delegates auth): `entryX=0;entryY=0.5`
 
+**縦方向の矢印はラベルから出す**: Generic Icon プレースホルダ（図形）とラベル（text セル）が縦に並んでいる場合、縦方向に伸びる矢印の source は**ラベル text セル**にする（図形ではない）。図形から出すとラベルを飛び越えた不自然な矢印になる。
+
+- End User → Application Clients（縦配置）: source=`eu_label`（End User のラベル）
+- Application Clients → CIS (authenticate): source=`ac_label`
+
 source 側も同様に `exitX` / `exitY` で指定可能。複数のエッジが同じ辺から出る場合は分散させる。
 
 ---
