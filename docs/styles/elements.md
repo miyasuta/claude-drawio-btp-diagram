@@ -27,7 +27,9 @@ text: （空）
 
 > 関連: 公式 Product Names のルール「SAP 製品名は SAP ロゴとペアで表示 / 同一図内で多数のロゴは非推奨」 → [`../GUIDELINES.md` の Product Names セクション](../GUIDELINES.md#product-names製品名表記)
 
-**⚠️ 必須**: SAP BTP エリア（BTPコンテナ）には必ずSAPロゴを追加すること。ロゴセルは「BTP」というタイトル文字も兼ねる。
+**⚠️ 必須**: SAP 製品を表すコンテナ（BTP コンテナ、BTP 外の SAP 製品ボックス）には必ず SAP ロゴを追加すること。ロゴセルは製品名のタイトル文字も兼ねる。
+
+> 設計ルール: [`../rules/conventions.md` §9](../rules/conventions.md#9-btp-外の-sap-製品ボックスには-sap-ロゴを追加する)
 
 ```
 style: image;image=img/lib/sap/SAP_Logo.svg;editableCssRules=.*;
@@ -44,6 +46,23 @@ text: SAP BTP  ← タイトル文字を兼ねる（ロゴ右側に表示され�
 - コンテナ内の左上に配置（コンテナ x+15, コンテナ y+11 が目安）
 - BTP コンテナ矩形自体の `value` は空にし、ロゴセルで重ねて表示する
 - タイトル文字のスタイルはロゴセルに内包されており、単独のスタイル定義は未確立
+
+### BTP 外 SAP 製品ボックスでのロゴ
+
+BTP コンテナと同じ要領で、矩形の左上にロゴ + 製品名を配置する。ボックスが小さい場合は `fontSize=12` に下げる。
+
+```
+style: image;image=img/lib/sap/SAP_Logo.svg;editableCssRules=.*;
+       verticalLabelPosition=middle;labelBackgroundColor=none;verticalAlign=middle;
+       imageAspect=0;labelPosition=right;align=left;
+       fontSize=12;fontStyle=1;spacingLeft=0;fontColor=#002A86;spacing=0;
+width: 37
+height: 19
+text: S/4HANA Private Cloud  ← 製品名（ロゴが SAP を表すので "SAP" プレフィックスは省略可）
+```
+
+- BTP ロゴとの違いは `fontSize` のみ（16 → 12）
+- 配置位置は同じ（コンテナ x+15, y+11）
 
 ### タイトル文字のスタイル（ロゴセル内）
 

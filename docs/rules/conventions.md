@@ -99,3 +99,14 @@ Destination Service → Connectivity Service → Cloud Connector
 - **Cloud Connector**: 接続先システムの箱の中に配置する（BTP 外）
 
 Cloud Connector は BTP 側のコンポーネントだが、図上は**接続先システムの箱の中**に描く（物理的にオンプレミス環境にインストールされるため）。
+
+---
+
+## 9. BTP 外の SAP 製品ボックスには SAP ロゴを追加する
+
+BTP 外に配置する SAP 製品（SAP S/4HANA、SAP SuccessFactors 等）の矩形には、**BTP コンテナと同じパターンで SAP ロゴ + 製品名を左上に配置する**。
+
+- 矩形の `value` は空にし、ロゴセル（`image=img/lib/sap/SAP_Logo.svg`）で製品名を表示する
+- SAP 製品であることを視覚的に明示するため
+
+> draw.io での実装詳細（フォントサイズ・配置位置）は [`../styles/elements.md`](../styles/elements.md) の「SAP ロゴ」セクションを参照。

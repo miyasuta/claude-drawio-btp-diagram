@@ -69,8 +69,11 @@
     </mxCell>
 
     <!-- ===== SAP S/4HANA Private Cloud (BTP外) ===== -->
-    <mxCell id="s4" value="SAP S/4HANA&#xa;Private Cloud" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#EBF8FF;arcSize=32;absoluteArcSize=1;strokeWidth=1.5;verticalAlign=top;align=left;spacingLeft=15;spacingTop=10;fontSize=12;fontStyle=1;fontColor=#002A86;fontFamily=Helvetica;" vertex="1" parent="1">
+    <mxCell id="s4" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#EBF8FF;arcSize=32;absoluteArcSize=1;strokeWidth=1.5;verticalAlign=top;fontSize=12;fontStyle=1;fontColor=#002A86;" vertex="1" parent="1">
       <mxGeometry x="860" y="175" width="170" height="170" as="geometry"/>
+    </mxCell>
+    <mxCell id="s4_logo" value="S/4HANA&#xa;Private Cloud" style="image;image=img/lib/sap/SAP_Logo.svg;editableCssRules=.*;verticalLabelPosition=middle;labelBackgroundColor=none;verticalAlign=middle;imageAspect=0;labelPosition=right;align=left;fontSize=12;fontStyle=1;spacingLeft=0;fontColor=#002A86;spacing=0;" vertex="1" parent="1">
+      <mxGeometry x="875" y="186" width="37" height="19" as="geometry"/>
     </mxCell>
 
     <!-- Cloud Connector (inside S/4HANA) -->
