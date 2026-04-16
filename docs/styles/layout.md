@@ -1,29 +1,24 @@
 # レイアウトガイド
 
-draw.io で SAP BTP ダイアグラムを描くときのレイアウト原則。**Claude はダイアグラム作成時に必ずこのファイルを読む**。
+draw.io XML を生成するときの**実装レベルの詳細**（px サイズ・座標計算・エッジ接続点・余白）を定義する。**Claude はステップ4（draw.io XML 生成）の際にこのファイルを読む**。
 
-個別要素のスタイル定義（BTP コンテナ、アイコンなど）は [`elements.md`](elements.md) を参照。
+論理的な配置ルール（何をどこに置くか、どう組み合わせるか）は [`../rules/conventions.md`](../rules/conventions.md) を参照。個別要素のスタイル定義（BTP コンテナ、アイコンなど）は [`elements.md`](elements.md) を参照。
 
 このファイルは SAP 公式ガイドラインを draw.io で具体化した実装層。source of truth は [`../GUIDELINES.md`](../GUIDELINES.md)。公式と食い違いを見つけたら `styles/` 側を公式に合わせる（変更前にユーザーに確認）。
 
 ---
 
-## ⚠️ レイアウトに関する注意事項（重要）
+## 1. 直線 vs orthogonal の使い分け
 
-ダイアグラム全体のレイアウトは、見た目の整列と密度の両方を意識して決めること。
+> 論理原則「データフローは一直線に並べる」→ [`../rules/conventions.md` §3](../rules/conventions.md#3-データフローは一直線に並べる)
 
-### 1. 一直線に並べられる要素は極力一直線にする
-
-データフローやシーケンスで連続する要素は、**横方向でも縦方向でも** 一直線に揃える。折れ線や段差を入れると視覚的な流れが断たれる。
-
-- **横並びの例**: `Application Clients` → `SAP Build Work Zone` → `SAP Task Center` は同じ Y 座標に揃える
-- **縦並びの例**: 上から下に流れるシーケンスは同じ X 座標に揃える
-
-一直線に並んだ要素間の接続は、横方向・縦方向にかかわらず**直線（まっすぐな矢印）**で描く。曲がる必要がないのに orthogonal を使うと不自然なベンドが入るため避ける。一直線に並ばない要素間のみ **orthogonal（折れ曲がった直線）** を使う。
+一直線に並んだ要素間の接続は**直線（まっすぐな矢印）**で描く。曲がる必要がないのに orthogonal を使うと不自然なベンドが入るため避ける。一直線に並ばない要素間のみ **orthogonal（折れ曲がった直線）** を使う。
 
 > 関連: 公式 Foundation の Spacing ルール「オブジェクト間は均等に、SAPロゴの高さ程度」 → [`../GUIDELINES.md` の Spacing セクション](../GUIDELINES.md#スペーシングspacing)
 
-### 2. コンテナの無駄な余白を作らない
+---
+
+## 2. コンテナの無駄な余白を作らない
 
 Subaccount や BTP コンテナのサイズは、内部要素を配置したうえで**実際に必要な大きさに詰める**。アイコン + ラベルだけのサービスは意外に小さいので、旧サイズのまま大きな箱を残すと余白が目立つ。
 
@@ -43,7 +38,9 @@ Subaccount や BTP コンテナのサイズは、内部要素を配置したう�
 - 内部の SAP サービスアイコン 2 個（56×56）が同じ Y で横並び
 - BTP 全体（Subaccount + その下に CIS コンテナ 280×150）: 410×460
 
-### 3. 標準サイズ
+---
+
+## 3. 標準サイズ
 
 > 関連: 公式 Icons ルール（SAP BTP Service Icon はグレー背景円付きバージョン必須 / Generic Icon はニュートラルグレー） → [`../GUIDELINES.md` の Icons セクション](../GUIDELINES.md#iconsアイコン)。公式テキストには具体 px 仕様が無いため、下記の標準サイズはプロジェクト独自の運用値。
 
@@ -63,7 +60,9 @@ Subaccount や BTP コンテナのサイズは、内部要素を配置したう�
 - アスペクト比が正方形でないアイコン（例: Application Clients は横長の SVG）は、人間が draw.io 上で差し替え時にサイズ調整する
 - 重要なのは**位置を先に確定させる**こと。アイコン差し替え後に人間が大きさを微調整しても、中心座標さえ合っていればレイアウトは崩れない
 
-### 4. 接続要素の軸揃え（直線矢印を成立させる）
+---
+
+## 4. 接続要素の軸揃え（直線矢印を成立させる）
 
 矢印で繋がる一連の要素は、**中心座標（X または Y）を完全に一致**させる。中心が 1 px でもずれると、draw.io は自動的に orthogonal に折れ曲げてしまう。
 
@@ -80,18 +79,20 @@ Subaccount や BTP コンテナのサイズは、内部要素を配置したう�
 
 > 関連: 公式 Lines / Connectors の方向とセマンティック色のルール → [`../GUIDELINES.md` の Lines / Connectors セクション](../GUIDELINES.md#lines--connectors線コネクタ)
 
-### 5. SAP Cloud Identity Services は Subaccount の下に配置する
+---
 
-SAP Cloud Identity Services (IAS) は BTP コンテナ内・Subaccount 外の要素。配置は **Subaccount の直下（垂直下方）** に固定する。
+## 5. CIS 配置の実装詳細
 
-**ルール**:
-- IAS アイコン（56×56）を Subaccount の下辺中央付近、BTP コンテナ内の下段に置く
-- Subaccount ↔ IAS の trust 線は短い垂直線になる（Subaccount 下辺中央 → IAS 上辺中央、ピンク双方向）
-- BTP コンテナの高さは IAS を含めた下部余白まで確保する（Subaccount 下端 + 30 px ギャップ + IAS 高さ + 30 px ボトム余白）
+> 論理原則「CIS は Subaccount の下に配置する」→ [`../rules/conventions.md` §5](../rules/conventions.md#5-sap-cloud-identity-services-は-subaccount-の下に配置する)
 
-**なぜ下か**: IAS は認証のバックエンドとして Subaccount を支える関係。視覚的にも「Subaccount が IAS に乗っている」イメージで、trust 線の向きが上下になるよう揃える。左右や上に置くと他の要素と交差しやすく、trust 線の意味が読み取りにくくなる。
+**実装ルール**:
+- CIS アイコン（56×56）を Subaccount の下辺中央付近、BTP コンテナ内の下段に置く
+- Subaccount ↔ CIS の trust 線は短い垂直線になる（Subaccount 下辺中央 → CIS 上辺中央、ピンク双方向）
+- BTP コンテナの高さは CIS を含めた下部余白まで確保する（Subaccount 下端 + 30 px ギャップ + CIS 高さ + 30 px ボトム余白）
 
-### 6. エッジの接続点を明示的に指定する
+---
+
+## 6. エッジの接続点を明示的に指定する
 
 矢印の source / target だけを指定すると、draw.io が自動でルーティングを決めるため、コンテナの位置調整で経路が崩れることがある。重要な矢印には **`entryX` / `entryY`** を明示的に指定する。
 
@@ -104,7 +105,8 @@ SAP Cloud Identity Services (IAS) は BTP コンテナ内・Subaccount 外の要
 
 **使用例**:
 - TC → On-Premise / Cloud Solutions: `entryX=0;entryY=0.5`（相手の左辺中央）
-- Subaccount → CIS コンテナ (trust): `entryX=0.5;entryY=0`（CIS コンテナの上辺中央）
+- Subaccount ↔ CIS (trust): `exitX=0.5;exitY=1` → `entryX=0.5;entryY=0`（SA 下辺中央 → CIS 上辺中央、垂直直線）
+- Application Clients → CIS (authenticate): source は AC の**ラベル text セル**（プレースホルダではない）。`exitX=0.5;exitY=1` → `entryX=0;entryY=0.5`（ラベル下辺中央 → CIS 左辺中央、orthogonal）
 - CIS → 3rd-party IdP (delegates auth): `entryX=0;entryY=0.5`
 
 source 側も同様に `exitX` / `exitY` で指定可能。複数のエッジが同じ辺から出る場合は分散させる。

@@ -15,6 +15,8 @@ Claude Code と協働して SAP BTP アーキテクチャ図を draw.io で作�
       ↓
 4. Claude: diagram.drawio に draw.io XML を生成
       ↓
+4.5 Claude: diagram-review スキルで自動レビュー
+      ↓
 5. 人間: XML を draw.io に手動で貼り付けてビジュアル確認
 ```
 
@@ -69,6 +71,10 @@ Claude には以下を明示的に伝える：
 
 ### ステップ2-3: Mermaid で論理構造を確認
 
+**Claude が読むドキュメント**: [`rules/conventions.md`](rules/conventions.md)
+
+Claude は Mermaid を書く前に `rules/conventions.md` を確認し、構成パターン（End User + Application Clients のセット配置、オンプレ接続の 3 点セット、CIS の配置場所など）・ラベル規約・言語ルールに従う。
+
 Claude に「diagram.md に Mermaid で書き出して」と指示する。人間は VSCode のプレビューで確認し、間違っていたら言葉で修正指示。
 
 > CIS は Subaccount の外に出してください。trust 関係は双方向矢印にしてください。
@@ -79,7 +85,9 @@ Claude に「diagram.md に Mermaid で書き出して」と指示する。人�
 
 ### ステップ4: draw.io XML 生成
 
-Claude に「diagram.drawio に draw.io 形式で書き出して」と指示する。Claude はこのステップで [`styles/layout.md`](styles/layout.md) と [`styles/elements.md`](styles/elements.md) を読んで XML を組み立てる。スタイル定義は人間が直接触る必要はなく、スタイル変更が必要なら「`styles/` のルールに従って」と言うだけで良い。
+**Claude が読むドキュメント**: [`styles/layout.md`](styles/layout.md) + [`styles/elements.md`](styles/elements.md)（+ 判断に迷ったら [`GUIDELINES.md`](GUIDELINES.md)）
+
+Claude に「diagram.drawio に draw.io 形式で書き出して」と指示する。`rules/conventions.md` はステップ2-3 で既に適用済みのため、ここでは draw.io 固有の実装（px サイズ・座標・エッジ接続点・スタイル値）に集中する。スタイル定義は人間が直接触る必要はなく、スタイル変更が必要なら「`styles/` のルールに従って」と言うだけで良い。
 
 #### XML 生成前の準備（推奨手順）
 
@@ -112,7 +120,11 @@ Claude が XML を書く際、座標は粗く決めて良い。**最終的な位
 - **スタイル仕様**: 色・角丸・線種・フォント等で `styles/` に定義がない要素は、公式 GUIDELINES に該当セクションがあればそれを引用し、無ければユーザーに確認する
 - **レイアウト判断**: 新しい配置パターン（スタックコンテナ、interface 記号など）は勝手に採用しない
 
-確認の結果、**再利用可能なルールだと判断したら [`styles/layout.md`](styles/layout.md) または [`styles/elements.md`](styles/elements.md) に追記**する。公式由来のルールなら [`GUIDELINES.md`](GUIDELINES.md) の該当セクションへの相互リンクも一緒に足す。これにより `styles/` が使用と共に育っていき、次回以降は再質問が不要になる。
+確認の結果、**再利用可能なルールだと判断したら適切なファイルに追記**する:
+- **構成パターン・配置ルール** → [`rules/conventions.md`](rules/conventions.md)
+- **draw.io スタイル・サイズ** → [`styles/layout.md`](styles/layout.md) または [`styles/elements.md`](styles/elements.md)
+
+公式由来のルールなら [`GUIDELINES.md`](GUIDELINES.md) の該当セクションへの相互リンクも一緒に足す。これにより `rules/` と `styles/` が使用と共に育っていき、次回以降は再質問が不要になる。
 
 > Claude への指示例: 「この図で SAP Integration Suite のアイコンが要るけど `styles/elements.md` に `SAPIcon` 名の記載が無い。正しい名前を教えてもらえたら、そのまま `styles/elements.md` の SAPIcon 表に追記してください」
 
@@ -136,6 +148,12 @@ Claude が XML を書く際、座標は粗く決めて良い。**最終的な位
 
 ---
 
+### ステップ4.5: 自動レビュー（Claude が実行）
+
+ステップ4で `diagram.drawio` を生成した直後、Claude は **diagram-review スキル**（`.claude/skills/diagram-review/`）を自動実行する。`rules/conventions.md` と `styles/` の現在のルールに照らして XML をチェックし、問題があれば報告する。問題がなければ「レビュー OK」と表示してステップ5に進む。
+
+---
+
 ### ステップ5: draw.io でビジュアル確認
 
 生成された `diagram.drawio` の内容を draw.io にペーストして目視確認。問題があれば言葉で修正指示に戻る。
@@ -156,16 +174,17 @@ Claude がスクリーンショットを Read で読み込んでビジョンで�
 
 ## ファイル構成
 
-| ファイル | 役割 |
-|---|---|
-| `diagram.md` | Mermaid 論理構造（ステップ2-3 の成果物） |
-| `diagram.drawio` | draw.io XML（ステップ4 の成果物、手貼り用） |
-| `docs/README.md` | docs/ 配下の索引 |
-| `docs/WORKFLOW.md` | このファイル（フロー全体） |
-| `docs/GUIDELINES.md` | SAP 公式ガイドラインの日本語要約（source of truth） |
-| `docs/styles/layout.md` | レイアウト原則・標準サイズ・軸揃え・エッジ規則（GUIDELINES の実装層） |
-| `docs/styles/elements.md` | 個別要素のスタイル定義（GUIDELINES の実装層） |
-| `.claude/CLAUDE.md` | draw.io MCP の使い方・Tips |
+| ファイル | 役割 | 読むタイミング |
+|---|---|---|
+| `docs/WORKFLOW.md` | このファイル（フロー全体） | 会話開始時 |
+| `docs/rules/conventions.md` | ダイアグラム設計規約（構成パターン・ラベル・言語） | **ステップ2-3**（Mermaid） |
+| `docs/styles/layout.md` | draw.io 実装詳細（px サイズ・座標・エッジ接続点） | **ステップ4**（draw.io XML） |
+| `docs/styles/elements.md` | draw.io 要素スタイル定義（BTP, ロゴ, アイコン, 線） | **ステップ4**（draw.io XML） |
+| `docs/GUIDELINES.md` | SAP 公式ガイドラインの日本語要約（source of truth） | 判断に迷ったとき |
+| `diagram.md` | Mermaid 論理構造（ステップ2-3 の成果物） | — |
+| `diagram.drawio` | draw.io XML（ステップ4 の成果物、手貼り用） | — |
+| `.claude/skills/diagram-review/` | ダイアグラムレビュースキル | **ステップ4.5**（自動実行） |
+| `.claude/CLAUDE.md` | プロジェクト設定・draw.io MCP セットアップ | — |
 
 ---
 

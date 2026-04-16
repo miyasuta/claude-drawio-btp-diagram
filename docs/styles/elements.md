@@ -81,9 +81,20 @@ text: Subaccount
 
 **⚠️ 使用ルール**: Subaccount 内のサービスは基本的に矩形で囲む必要はない（アイコン + ラベルのみで配置する）。**複数のサービスで構成されるソリューションをグルーピングする場合や、そのサービスが他のコンポーネント（別サービス・アプリケーション等）をホストする場合のみ** 矩形で囲む。ソリューション単位のグルーピングが必要かどうかは設計段階で明示的に指示する。
 
+**⚠️ 塗りの交互ルール（公式 Areas 準拠）**: 入れ子にする際は塗り（`#EBF8FF`）と白（`#ffffff`）を**交互に**使う。親が白なら子は塗り、親が塗りなら子は白。
+
+| レベル | 例 | fillColor |
+|---|---|---|
+| L0 | BTP コンテナ | `#EBF8FF`（塗り） |
+| L1 | Subaccount | `#ffffff`（白） |
+| L2 | サービスボックス（BWZ 等） | `#EBF8FF`（塗り） |
+| L3 | アプリコンテナ等 | `#ffffff`（白） |
+
 ```
-style: rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#ffffff;
-       arcSize=32;absoluteArcSize=1;imageWidth=64;imageHeight=64;strokeWidth=1.5;
+style (L2, 塗り): rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#EBF8FF;
+                   arcSize=32;absoluteArcSize=1;strokeWidth=1.5;
+style (L3, 白):   rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColor=#ffffff;
+                   arcSize=32;absoluteArcSize=1;strokeWidth=1;
 ```
 
 ### サービスアイコン付きサービスボックス

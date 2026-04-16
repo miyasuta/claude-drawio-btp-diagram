@@ -9,6 +9,8 @@ docs/
 ├── README.md           ← このファイル。索引
 ├── WORKFLOW.md         ← 人間 & Claude の協働フロー（まずこれを読む）
 ├── GUIDELINES.md       ← SAP 公式ガイドラインの日本語要約（source of truth）
+├── rules/
+│   └── conventions.md  ← ダイアグラム設計規約（構成パターン・ラベル・言語ルール）
 └── styles/
     ├── layout.md       ← レイアウト原則・標準サイズ・軸揃え・エッジ規則
     └── elements.md     ← 個別要素のスタイル定義（BTP, ロゴ, アイコン, 線 等）
@@ -19,9 +21,9 @@ docs/
 | ステップ | 読むファイル |
 |---|---|
 | 会話開始時 | [`WORKFLOW.md`](WORKFLOW.md) — フロー全体と Claude / 人間の分担 |
-| ステップ1-3（論理構造 / Mermaid） | [`WORKFLOW.md`](WORKFLOW.md) のみで十分 |
-| ステップ4（draw.io XML 生成） | [`styles/layout.md`](styles/layout.md) + [`styles/elements.md`](styles/elements.md) |
-| 既存ダイアグラムの修正 | [`styles/layout.md`](styles/layout.md) + [`styles/elements.md`](styles/elements.md) |
+| ステップ2-3（Mermaid / 論理構造） | [`rules/conventions.md`](rules/conventions.md) — 構成パターン・ラベル・言語ルール |
+| ステップ4（draw.io XML 生成） | [`styles/layout.md`](styles/layout.md) + [`styles/elements.md`](styles/elements.md) — draw.io 実装詳細 |
+| 既存ダイアグラムの修正 | [`rules/conventions.md`](rules/conventions.md) + [`styles/layout.md`](styles/layout.md) + [`styles/elements.md`](styles/elements.md) |
 | スタイル判断に迷ったとき | [`GUIDELINES.md`](GUIDELINES.md) — SAP 公式準拠の確認 |
 
 ## スタイルの source of truth
