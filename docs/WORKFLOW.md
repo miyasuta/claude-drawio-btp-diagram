@@ -4,7 +4,7 @@ Claude Code と協働して SAP BTP アーキテクチャ図を draw.io で作�
 
 ---
 
-## 基本ワークフロー（5ステップ）
+## 基本ワークフロー（5ステップ + レビュー）
 
 ```
 1. 人間: 設計を言葉で記述
@@ -15,9 +15,11 @@ Claude Code と協働して SAP BTP アーキテクチャ図を draw.io で作�
       ↓
 4. Claude: diagram.drawio に draw.io XML を生成
       ↓
-4.5 Claude: diagram-review スキルで自動レビュー
+4.5 Claude: diagram-review（構造レビュー）— XML ベースで自動チェック
       ↓
-5. 人間: XML を draw.io に手動で貼り付けてビジュアル確認
+5. 人間: XML を draw.io に手動で貼り付け
+      ↓
+5.5 Claude: diagram-review（ビジュアルレビュー）— スクリーンショットで見た目チェック
 ```
 
 **なぜ Mermaid を間に挟むか**: draw.io XML は冗長で人間がレビューしづらい。Mermaid で論理構造（ノード・エッジ・グルーピング）だけを先に確定させることで、draw.io XML 生成時はスタイルに集中できる。
@@ -148,15 +150,23 @@ Claude が XML を書く際、座標は粗く決めて良い。**最終的な位
 
 ---
 
-### ステップ4.5: 自動レビュー（Claude が実行）
+### ステップ4.5: 構造レビュー（Claude が自動実行）
 
-ステップ4で `diagram.drawio` を生成した直後、Claude は **diagram-review スキル**（`.claude/skills/diagram-review/`）を自動実行する。`rules/conventions.md` と `styles/` の現在のルールに照らして XML をチェックし、問題があれば報告する。問題がなければ「レビュー OK」と表示してステップ5に進む。
+ステップ4で `diagram.drawio` を生成した直後、Claude は **diagram-review スキル（Phase 1: 構造レビュー）** を自動実行する。`rules/conventions.md` と `styles/` の現在のルールに照らして XML をチェックし、問題があれば報告する。問題がなければ「レビュー OK」と表示してステップ5に進む。
 
 ---
 
-### ステップ5: draw.io でビジュアル確認
+### ステップ5: draw.io に貼り付け + スクリーンショット共有
 
-生成された `diagram.drawio` の内容を draw.io にペーストして目視確認。問題があれば言葉で修正指示に戻る。
+生成された `diagram.drawio` の内容を draw.io にペーストし、**スクリーンショットを会話に貼り付ける**。
+
+---
+
+### ステップ5.5: ビジュアルレビュー（Claude が実行）
+
+人間が共有したスクリーンショットを元に、Claude は **diagram-review スキル（Phase 2: ビジュアルレビュー）** を実行する。ラベルのはみ出し・重なり、コンテナ余白、矢印の直線性などを画像から確認し、問題があれば修正案とともに報告する。問題がなければ「ビジュアルレビュー OK」と表示する。
+
+問題があれば言葉で修正指示に戻る。
 
 **Chrome CDP を使った確認ループ**（Claude 側で実行可能）:
 
@@ -183,7 +193,7 @@ Claude がスクリーンショットを Read で読み込んでビジョンで�
 | `docs/GUIDELINES.md` | SAP 公式ガイドラインの日本語要約（source of truth） | 判断に迷ったとき |
 | `diagram.md` | Mermaid 論理構造（ステップ2-3 の成果物） | — |
 | `diagram.drawio` | draw.io XML（ステップ4 の成果物、手貼り用） | — |
-| `.claude/skills/diagram-review/` | ダイアグラムレビュースキル | **ステップ4.5**（自動実行） |
+| `.claude/skills/diagram-review/` | ダイアグラムレビュースキル（構造 + ビジュアル） | **ステップ4.5**（構造）+ **ステップ5.5**（ビジュアル） |
 | `.claude/CLAUDE.md` | プロジェクト設定・draw.io MCP セットアップ | — |
 
 ---

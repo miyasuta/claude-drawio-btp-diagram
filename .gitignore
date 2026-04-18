@@ -2,3 +2,6 @@
 # Claude Code
 .mcp.json
 tmp/
+
+# Diagrams (generated output)
+diagrams/
