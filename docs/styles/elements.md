@@ -130,6 +130,7 @@ style (L3, 白):   rounded=1;whiteSpace=wrap;html=1;strokeColor=#0070F2;fillColo
    - アイコンの右隣（アイコン x + 40 あたり）に配置
    - Y 中央をアイコンと揃える（アイコン y と同じ y、高さ 32 の text セル）
    - SAP BTP タイトル色（`#002A86`）+ 太字
+   - **3 単語以上のサービス名は `<br>` で改行する**（例: 「SAP Build&lt;br&gt;Work Zone」「Cloud Foundry&lt;br&gt;runtime」）。改行する場合はテキストセルの高さを 36〜40 に広げる
 
 **配置例**（BWZ ボックス `x=240, y=180, w=180, h=140` の場合）:
 
@@ -286,3 +287,22 @@ SAPIcon=<アイコン名>
 | SAP Connectivity Service | `SAP_Connectivity_Service` |
 
 他のサービスのアイコン名は draw.io のシェイプライブラリから確認できる。
+
+---
+
+## 非 SAP ボックス（グレー矩形）
+
+> 関連: 公式 Foundation の Primary Colors「Non-SAP Area: Border `#475E75` / Fill `#F5F6F7`」 → [`../GUIDELINES.md` の Colors セクション](../GUIDELINES.md#色colors)
+
+BTP 外に配置する非 SAP の外部サービス・システム（External LLM Provider、3rd-party API 等）を表す矩形。
+
+```
+style: rounded=1;whiteSpace=wrap;html=1;strokeColor=#475E75;fillColor=#F5F6F7;
+       arcSize=32;absoluteArcSize=1;strokeWidth=1.5;
+       verticalAlign=middle;align=center;fontSize=12;fontColor=default;fontFamily=Helvetica;
+text: サービス名（例: External LLM Provider）
+```
+
+- 角丸は SAP ボックスと揃える（`arcSize=32` + `absoluteArcSize=1`）
+- ラベルはボックスに埋め込み、中央配置
+- サイズは内容に応じて調整（目安: 140×50）
