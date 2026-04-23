@@ -4,6 +4,15 @@
 
 Claude Code と draw.io MCP を組み合わせて、SAP BTP アーキテクチャ図を効率よく描くワークフローを確立するプロジェクト。人間は言葉で設計を伝え、Claude が Mermaid → draw.io XML に落とし込む。
 
+## スキル化完了（2026-04-24）
+
+このプロジェクトで確立したワークフローは `drawio-btp-diagram-skills` リポジトリにスキル化された。**新規プロジェクトでは `~/.claude/skills/drawio-sap-diagrams`（および `diagram-review`）を使う**。本リポは diagram 作業ワークスペース + 検証サンプル（`diagrams/` 過去成果物）として継続する。
+
+- 新リポ: `/Users/mio/projects/claude-drawio-skill/drawio-btp-diagram-skills/`
+- 移行計画: `/Users/mio/projects/claude-drawio-skill/PLAN.md`
+- `docs/*` は source of truth を新リポの `skills/drawio-sap-diagrams/references/` に移植済み。当面保持するが、中期的には段階削除予定
+- `.claude/skills/diagram-review/` は削除済み（グローバルの symlink を使う）
+
 ## 見にいく場所
 
 実際の作業ルール・スタイル定義・公式ガイドラインは `docs/` 配下にある。Claude は会話の内容に応じて以下を読む。
